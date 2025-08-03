@@ -68,7 +68,7 @@ export default class ReportDetailPresenter {
         this.#view.postNewCommentFailed(response.message);
         return;
       }
- 
+
       // No need to wait response
       this.notifyReportOwner(response.data.id);
  
@@ -104,6 +104,7 @@ export default class ReportDetailPresenter {
         console.error('notifyMe: response:', response);
         return;
       }
+     
       console.log('notifyMe:', response.message);
     } catch (error) {
       console.error('notifyMe: error:', error);

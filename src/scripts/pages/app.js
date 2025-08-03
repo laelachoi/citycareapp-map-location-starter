@@ -9,7 +9,7 @@ import {
 import { isServiceWorkerAvailable, setupSkipToContent, transitionHelper } from '../utils';
 import { getAccessToken, getLogout } from '../utils/auth';
 import { routes } from '../routes/routes';
-import { isCurrentPushSubscriptionAvailable, subscribe } from '../utils/notification-helper';
+import { isCurrentPushSubscriptionAvailable, subscribe, unsubscribe } from '../utils/notification-helper';
 
 export default class App {
   #content;
@@ -86,7 +86,12 @@ export default class App {
     
     if (isSubscribed) {
       pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
-    
+      document.getElementById('unsubscribe-button').addEventListener('click', () => {
+        unsubscribe().finally(() => {
+          this.#setupPushNotification();
+        });
+      });
+ 
       return;
     }
  
