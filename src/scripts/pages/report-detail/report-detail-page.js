@@ -13,6 +13,7 @@ import ReportDetailPresenter from './report-detail-presenter';
 import { parseActivePathname } from '../../routes/url-parser';
 import * as CityCareAPI from '../../data/api';
 import Map from '../../utils/map';
+import Database from '../../data/database';
 
 export default class ReportDetailPage {
   #presenter = null;
@@ -54,10 +55,11 @@ export default class ReportDetailPage {
     this.#presenter = new ReportDetailPresenter(parseActivePathname().id, {
       view: this,
       apiModel: CityCareAPI,
+      dbModel: Database,
     });
-
+ 
     this.#setupForm();
-
+ 
     this.#presenter.showReportDetail();
     this.#presenter.getCommentsList();
   }
@@ -166,19 +168,36 @@ export default class ReportDetailPage {
   renderSaveButton() {
     document.getElementById('save-actions-container').innerHTML =
       generateSaveReportButtonTemplate();
-
+  
     document.getElementById('report-detail-save').addEventListener('click', async () => {
-      alert('Fitur simpan laporan akan segera hadir!');
+      await this.#presenter.saveReport();
+      await this.#presenter.showSaveButton();
     });
+  }
+ 
+  saveToBookmarkSuccessfully(message) {
+    console.log(message);
+  }
+  saveToBookmarkFailed(message) {
+    alert(message);
   }
 
   renderRemoveButton() {
     document.getElementById('save-actions-container').innerHTML =
       generateRemoveReportButtonTemplate();
-
+ 
     document.getElementById('report-detail-remove').addEventListener('click', async () => {
-      alert('Fitur simpan laporan akan segera hadir!');
+      await this.#presenter.removeReport();
+      await this.#presenter.showSaveButton();
     });
+  }
+
+  removeFromBookmarkSuccessfully(message) {
+    console.log(message);
+  }
+
+  removeFromBookmarkFailed(message) {
+    alert(message);
   }
 
   addNotifyMeEventListener() {
